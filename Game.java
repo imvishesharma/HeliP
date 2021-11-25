@@ -19,6 +19,7 @@ public class Game extends Canvas implements Runnable {
     private Handler handler;
 
     public Game() {
+
         handler = new Handler();
         Player p1 = new Player(WIDTH/2 - 16, 438, 123, 32);
         Enemy e1 = new Enemy(WIDTH/2 - 16, 50, 124, 32, handler);
@@ -71,6 +72,7 @@ public class Game extends Canvas implements Runnable {
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000) {
+                handler.addGameObject(new Bullet(handler.getGameObject(1).getX(), handler.getGameObject(1).getY(), 124, 16));
                 timer += 1000;
                 System.out.println("FPS : " + frames);
                 frames = 0;

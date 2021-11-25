@@ -20,7 +20,6 @@ public abstract class GameObject {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public abstract void tick();
@@ -48,4 +47,8 @@ public abstract class GameObject {
 
     public void setSpeedY(int spdY) {this.speedY = spdY;}
     public int getSpeedY() {return speedY;}
+
+    public void setImage(BufferedImage img) {
+        this.img = img;
+    }
 }

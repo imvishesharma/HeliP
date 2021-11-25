@@ -1,9 +1,9 @@
 package HeliP;
 
 import java.awt.Graphics;
-import java.awt.image.*;
-import javax.imageio.*;
-import java.io.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
 
 public abstract class GameObject {
     protected int posX, posY, id, speedX = 1, speedY = 1, size;

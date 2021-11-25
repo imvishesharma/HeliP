@@ -5,29 +5,32 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.Color;
 
+import java.util.LinkedList;
+
 import HeliP.Window;
 import HeliP.Player;
 import HeliP.Enemy;
 import HeliP.Handler;
 
-public class Game extends Canvas implements Runnable {
 
+public class Game extends Canvas implements Runnable {
+    private static int counter = 0;
     public static final int WIDTH = 500, HEIGHT = 500;
     private Thread thread;
     private boolean running = false;
 
-    private Handler handler;
+    private static LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+    public static Player player;
 
     public Game() {
+        //handler = new Handler();
+        player = new Player(WIDTH/2 - 16, 438, 123, 32);
+        enemies.add(new Enemy(WIDTH/2 - 16, 50, 124, 32));
+        enemies.add(new Enemy(100, 80, 124, 32));
+        //handler.addGameObject(p1);
+        //handler.addGameObject(e1);
 
-        handler = new Handler();
-        Player p1 = new Player(WIDTH/2 - 16, 438, 123, 32);
-        Enemy e1 = new Enemy(WIDTH/2 - 16, 50, 124, 32, handler);
-
-        handler.addGameObject(p1);
-        handler.addGameObject(e1);
-
-        this.addKeyListener(new KeyInput(handler));
+        this.addKeyListener(new KeyInput(player));
 
         new Window(WIDTH, HEIGHT, this);
     }
@@ -71,9 +74,12 @@ public class Game extends Canvas implements Runnable {
             }
             frames++;
 
-            if(System.currentTimeMillis() - timer > 1000) {
-                handler.addGameObject(new Bullet(handler.getGameObject(1).getX(), handler.getGameObject(1).getY(), 124, 16));
-                timer += 1000;
+            if(System.currentTimeMillis() - timer > 2000) {
+                counter++;
+                for(int i = 0; i < enemies.size(); i++) {
+                    enemies.get(i).createBullet();
+                }
+                timer += 2000;
                 System.out.println("FPS : " + frames);
                 frames = 0;
             }
@@ -82,7 +88,11 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        handler.tick();
+        for(int i = 0; i < enemies.size(); i++) {
+            GameObject tmpObj = enemies.get(i);
+
+            tmpObj.tick();
+        }
     }
 
     private void render() {
@@ -97,7 +107,14 @@ public class Game extends Canvas implements Runnable {
         g.setColor(Color.white);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        handler.render(g);
+        //handler.render(g);
+        player.render(g);
+
+        for(int i = 0; i < enemies.size(); i++) {
+            GameObject tmpObj = enemies.get(i);
+
+            tmpObj.render(g);
+        }
 
         g.dispose();
         bs.show();

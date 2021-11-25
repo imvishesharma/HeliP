@@ -14,9 +14,7 @@ public class Bullet extends GameObject {
     }
 
     public void tick() {
-        if(posY + speedY < Game.HEIGHT - size - 50) {
-            posY += speedY;
-        }
+        posY += speedY;
     }
 
     public void render(Graphics g) {

@@ -9,7 +9,7 @@ public class Handler {
     public void tick() {
         for(int i = 0; i < objs.size(); i++) {
             GameObject tmpObj = objs.get(i);
-
+            
             tmpObj.tick();
         }
     }

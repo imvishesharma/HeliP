@@ -6,7 +6,7 @@ import javax.imageio.*;
 import java.io.*;
 
 public abstract class GameObject {
-    protected int posX, posY, id, speedX, speedY, size;
+    protected int posX, posY, id, speedX = 1, speedY = 1, size;
     protected int lower_boundX = 0, upper_boundX = 500, lower_boundY = 0, upper_boundY = 500;
     protected BufferedImage img;
 

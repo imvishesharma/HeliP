@@ -6,6 +6,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.Color;
 
 import HeliP.Window;
+import HeliP.Player;
+import HeliP.Enemy;
+import HeliP.Handler;
 
 public class Game extends Canvas implements Runnable {
 
@@ -18,14 +21,14 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         handler = new Handler();
         Player p1 = new Player(WIDTH/2 - 16, 438, 123, 32);
-        Enemy e1 = new Enemy(WIDTH/2 - 16, 50, 124, 32);
+        Enemy e1 = new Enemy(WIDTH/2 - 16, 50, 124, 32, handler);
+
+        handler.addGameObject(p1);
+        handler.addGameObject(e1);
 
         this.addKeyListener(new KeyInput(handler));
 
         new Window(WIDTH, HEIGHT, this);
-
-        handler.addGameObject(p1);
-        handler.addGameObject(e1);
     }
 
 

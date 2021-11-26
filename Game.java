@@ -78,10 +78,10 @@ public class Game extends Canvas implements Runnable {
             }
         }
 
-        stop();
-
         tick();
         render();
+        
+        stop();
     }
 
     private void tick() {

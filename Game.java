@@ -11,13 +11,16 @@ import HeliP.Window;
 import HeliP.Player;
 import HeliP.Enemy;
 import HeliP.Handler;
-
+import HeliP.Bullet;
+import HeliP.Level;
+import HeliP.KeyInput;
+import HeliP.GameObject;
 
 public class Game extends Canvas implements Runnable {
     private static int counter = 0;
     public static final int WIDTH = 500, HEIGHT = 500;
     private Thread thread;
-    private boolean running = false;
+    public static boolean running = false;
 
     public static Player player;
     private Level l;
@@ -32,10 +35,10 @@ public class Game extends Canvas implements Runnable {
         new Window(WIDTH, HEIGHT, this);
     }
 
-
     public synchronized void start() {
         thread = new Thread(this);
         thread.start();
+
         running = true;
     }
 

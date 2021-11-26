@@ -4,7 +4,7 @@ import java.util.*;
 import java.awt.Graphics;
 
 public class Level {
-    private int WIDTH, HEIGHT = 100, SEED;
+    private int WIDTH, HEIGHT, SEED;
     private LinkedList<Enemy> enemies;
     private Random r;
 
@@ -20,7 +20,7 @@ public class Level {
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < seed; i++) {
-            positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(SEED*32));
+            positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(100));
         }
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {

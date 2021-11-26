@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.Random;
 import java.util.LinkedList;
 
-import HeliP.Bullet;
+//import HeliP.Bullet;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -60,7 +60,7 @@ public class Enemy extends GameObject {
 
         for(int i = 0; i < bullets.size(); i++) {
             bullets.get(i).tick();
-            if(bullets.get(i).posY > Game.HEIGHT - 30 - 16) {
+            if(bullets.get(i).posY > Game.HEIGHT - 30) {
                 bullets.remove(i);
             }
         }

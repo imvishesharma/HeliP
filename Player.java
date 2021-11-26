@@ -3,7 +3,7 @@ package HeliP;
 import java.awt.Graphics;
 import java.awt.Color;
 
-import HeliP.GameObject;
+//import HeliP.GameObject;
 
 public class Player extends GameObject {
     public Player(int posX, int posY, int id, int size) {

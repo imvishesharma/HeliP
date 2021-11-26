@@ -17,7 +17,6 @@ public class Enemy extends GameObject {
 
     private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
-
     public Enemy(int posX, int posY, int id, int size) {
         super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/hc.png");
 
@@ -65,6 +64,7 @@ public class Enemy extends GameObject {
                 bullets.remove(i);
             }
         }
+
     }
 
     public void render(Graphics g) {

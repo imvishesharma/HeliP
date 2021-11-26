@@ -19,16 +19,13 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     private boolean running = false;
 
-    private static LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     public static Player player;
+    private Level l;
 
     public Game() {
-        //handler = new Handler();
         player = new Player(WIDTH/2 - 16, 438, 123, 32);
-        enemies.add(new Enemy(WIDTH/2 - 16, 50, 124, 32));
-        enemies.add(new Enemy(100, 80, 124, 32));
-        //handler.addGameObject(p1);
-        //handler.addGameObject(e1);
+
+        l = new Level(1, WIDTH, HEIGHT);
 
         this.addKeyListener(new KeyInput(player));
 
@@ -74,11 +71,9 @@ public class Game extends Canvas implements Runnable {
             }
             frames++;
 
-            if(System.currentTimeMillis() - timer > 2000) {
+            if(System.currentTimeMillis() - timer > 1000) {
                 counter++;
-                for(int i = 0; i < enemies.size(); i++) {
-                    enemies.get(i).createBullet();
-                }
+                l.update();
                 timer += 2000;
                 System.out.println("FPS : " + frames);
                 frames = 0;
@@ -88,11 +83,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        for(int i = 0; i < enemies.size(); i++) {
-            GameObject tmpObj = enemies.get(i);
-
-            tmpObj.tick();
-        }
+        l.tick();
     }
 
     private void render() {
@@ -107,14 +98,9 @@ public class Game extends Canvas implements Runnable {
         g.setColor(Color.white);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        //handler.render(g);
         player.render(g);
 
-        for(int i = 0; i < enemies.size(); i++) {
-            GameObject tmpObj = enemies.get(i);
-
-            tmpObj.render(g);
-        }
+        l.render(g);
 
         g.dispose();
         bs.show();

@@ -19,16 +19,15 @@ import HeliP.GameObject;
 public class Game extends Canvas implements Runnable {
     private static int counter = 0;
     public static final int WIDTH = 500, HEIGHT = 500;
-    private Thread thread;
-    public static boolean running = false;
 
+    private Thread thread;
     public static Player player;
+
     private Level l;
 
     public Game() {
-        player = new Player(WIDTH/2 - 16, 438, 123, 32);
-
         l = new Level(5, WIDTH, HEIGHT);
+        player = new Player(WIDTH/2 - 16, 438, 123, 32);
 
         this.addKeyListener(new KeyInput(player));
 
@@ -38,14 +37,11 @@ public class Game extends Canvas implements Runnable {
     public synchronized void start() {
         thread = new Thread(this);
         thread.start();
-
-        running = true;
     }
 
     public synchronized void stop() {
         try {
             thread.join();
-            running = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,7 +55,7 @@ public class Game extends Canvas implements Runnable {
         long timer = System.currentTimeMillis();
         int frames = 0;
 
-        while(running) {
+        while(player.isAlive() && counter < 60) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -69,9 +65,8 @@ public class Game extends Canvas implements Runnable {
                 delta--;
             }
 
-            if(running) {
-                render();
-            }
+            render();
+
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000) {
@@ -82,7 +77,11 @@ public class Game extends Canvas implements Runnable {
                 frames = 0;
             }
         }
+
         stop();
+
+        tick();
+        render();
     }
 
     private void tick() {
@@ -108,6 +107,7 @@ public class Game extends Canvas implements Runnable {
         g.dispose();
         bs.show();
     }
+
     public static void main(String[] args) {
         new Game();
     }

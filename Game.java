@@ -22,11 +22,11 @@ public class Game extends Canvas implements Runnable {
 
     private Thread thread;
     public static Player player;
+    public static boolean running = true;
 
     private Level l;
 
     public Game() {
-        l = new Level(5, WIDTH, HEIGHT);
         player = new Player(WIDTH/2 - 16, 438, 123, 32);
 
         this.addKeyListener(new KeyInput(player));
@@ -54,8 +54,12 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
+        int seed = 3;
+        while(running) {
+            l = new Level(seed, WIDTH, HEIGHT);
+            player.incHealth(100);
 
-        while(player.isAlive() && counter < 60) {
+        while(player.isAlive()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -80,7 +84,11 @@ public class Game extends Canvas implements Runnable {
 
         tick();
         render();
-        
+        seed++;
+        if(seed == 6) {
+            running = false;
+        }
+        }
         stop();
     }
 

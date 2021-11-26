@@ -43,6 +43,7 @@ public class Level {
     }
 
     public void render(Graphics g) {
+        g.drawString("Level " + SEED, 200, 20);
         for(Enemy e : enemies) {
             e.render(g);
         }

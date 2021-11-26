@@ -22,7 +22,7 @@ public class Bullet extends GameObject {
         if(X <= this.posX && posX <= X + 24 && Y <= this.posY && posY <= Y + 32) {
             this.posX = 550;
             this.posY = 550;
-            Game.player.decHealth(20);
+            Game.player.decHealth(10);
         }
     }
 

@@ -20,7 +20,9 @@ public class Bullet extends GameObject {
         int X = Game.player.getX();
         int Y = Game.player.getY();
         if(X <= this.posX && posX <= X + 24 && Y <= this.posY && posY <= Y + 32) {
-            Game.running = false;
+            this.posX = 550;
+            this.posY = 550;
+            Game.player.decHealth(10);
         }
     }
 

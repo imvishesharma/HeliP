@@ -4,22 +4,23 @@ import java.util.*;
 import java.awt.Graphics;
 
 public class Level {
-    private int WIDTH, HEIGHT;
+    private int WIDTH, HEIGHT = 100, SEED;
     private LinkedList<Enemy> enemies;
     private Random r;
 
     public Level(int seed, int width, int height) {
         WIDTH = width;
         HEIGHT = height;
+        SEED = seed;
 
         enemies = new LinkedList<Enemy>();
-        
+
         r = new Random();
 
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < seed; i++) {
-            positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(100));
+            positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(SEED*32));
         }
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
@@ -28,7 +29,11 @@ public class Level {
     }
 
     public void update() {
-
+        for(Enemy e : enemies) {
+            if(r.nextInt(100) > SEED*5) {
+                e.createBullet();
+            }
+        }
     }
 
     public void tick() {

@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         player = new Player(WIDTH/2 - 16, 438, 123, 32);
 
-        l = new Level(1, WIDTH, HEIGHT);
+        l = new Level(5, WIDTH, HEIGHT);
 
         this.addKeyListener(new KeyInput(player));
 
@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable {
             if(System.currentTimeMillis() - timer > 1000) {
                 counter++;
                 l.update();
-                timer += 2000;
+                timer += 1000;
                 System.out.println("FPS : " + frames);
                 frames = 0;
             }

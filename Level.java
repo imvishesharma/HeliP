@@ -24,7 +24,7 @@ public class Level {
         }
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
-            enemies.add(new Enemy(p.getKey(), p.getValue(), 124, 16));
+            enemies.add(new Enemy(p.getKey(), p.getValue(), 124, 16, r.nextInt(2)));
         }
     }
 

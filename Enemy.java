@@ -12,12 +12,12 @@ import javax.imageio.ImageIO;
 import java.io.File;
 
 public class Enemy extends GameObject {
-    private boolean faceEast = true;
+    private boolean faceEast;
     private BufferedImage i1, i2;
 
     private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
-    public Enemy(int posX, int posY, int id, int size) {
+    public Enemy(int posX, int posY, int id, int size, int initDirec) {
         super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/hc.png");
 
         try {
@@ -30,6 +30,15 @@ public class Enemy extends GameObject {
             i2 = ImageIO.read(new File("/Users/inq/Desktop/JAVA/HeliP/hc1.png"));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(initDirec == 0) {
+            faceEast = true;
+            this.setImage(i1);
+        }
+        else {
+            faceEast = false;
+            this.setImage(i2);
         }
 
         speedX = 2;

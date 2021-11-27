@@ -19,7 +19,7 @@ public class Level {
 
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
-        for(int i = 0; i < seed; i++) {
+        for(int i = 0; i < seed + r.nextInt(seed*2); i++) {
             positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(100));
         }
 
@@ -30,7 +30,7 @@ public class Level {
 
     public void update() {
         for(Enemy e : enemies) {
-            if(r.nextInt(100) > SEED*5) {
+            if(r.nextInt(100) > SEED) {
                 e.createBullet();
             }
         }
@@ -43,7 +43,7 @@ public class Level {
     }
 
     public void render(Graphics g) {
-        g.drawString("Level " + SEED, 200, 20);
+        //g.drawString("Level " + SEED, 200, 20);
         for(Enemy e : enemies) {
             e.render(g);
         }

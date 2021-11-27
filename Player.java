@@ -30,6 +30,8 @@ public class Player extends GameObject {
 
         g2d.setColor(Color.red);
         g2d.fillRect(11, 11, Math.max(0, health - 2), 18);
+
+        g2d.drawString(String.valueOf(health), 120, 25);
     }
 
     public int getHealth() {
@@ -38,7 +40,7 @@ public class Player extends GameObject {
 
     public void decHealth(int dec) {
         this.health = Math.max(health - dec, 0);
-        System.out.println("Health = " + health);
+        //System.out.println("Health = " + health);
     }
 
     public void incHealth(int inc) {

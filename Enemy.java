@@ -18,16 +18,16 @@ public class Enemy extends GameObject {
     private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
     public Enemy(int posX, int posY, int id, int size, int initDirec) {
-        super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/hc.png");
+        super(posX, posY, id, size, Game.gameCurrentPath + "/Images/hc.png");
 
         try {
-            i1 = ImageIO.read(new File("/Users/inq/Desktop/JAVA/HeliP/hc.png"));
+            i1 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            i2 = ImageIO.read(new File("/Users/inq/Desktop/JAVA/HeliP/hc1.png"));
+            i2 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +46,8 @@ public class Enemy extends GameObject {
     }
 
     public void createBullet() {
-        bullets.add(new Bullet(posX, posY, 124, 16));
+        Bullet b = new Bullet(posX, posY, 124, 16);
+        bullets.add(b);
     }
 
     public void tick() {

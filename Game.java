@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.Color;
+import java.io.File;
 
 import java.util.LinkedList;
 
@@ -24,11 +25,22 @@ public class Game extends Canvas implements Runnable {
 
     private Thread thread;
     public static Player player;
-    public static boolean running = true;
+    private static boolean running = true;
+    public static boolean isPaused = false;
+
+    public static String gameCurrentPath;
 
     private Level l;
 
     public Game() {
+        try {
+            gameCurrentPath = new java.io.File(".").getCanonicalPath();
+            gameCurrentPath += "/HeliP";
+            //System.out.println("Current dir:" + gameCurrentPath);
+        }  catch (Exception e) {
+            e.printStackTrace();
+        }
+
         player = new Player(WIDTH/2 - 16, 438, 123, 32);
 
         this.addKeyListener(new KeyInput(player));
@@ -48,7 +60,7 @@ public class Game extends Canvas implements Runnable {
             e.printStackTrace();
         }
 
-        System.exit(0);
+        System.exit(1);
     }
 
     public void run() {
@@ -80,15 +92,18 @@ public class Game extends Canvas implements Runnable {
                 }
 
                 render();
-
                 frames++;
 
                 if(System.currentTimeMillis() - timer > 1000) {
-                    SCORE++;
-                    levelTimer++;
-                    l.update();
+
+                    if(!isPaused) {
+                        SCORE++;
+                        levelTimer++;
+                        l.update();
+                    }
                     timer += 1000;
                     System.out.println("FPS : " + frames);
+                    //System.out.println(isPaused == false ? "FALSE" : "TRUE");
                     frames = 0;
                 }
             }
@@ -101,6 +116,7 @@ public class Game extends Canvas implements Runnable {
                 int userOption = JOptionPane.showConfirmDialog(this, "Want to replay?");
                 if(userOption != JOptionPane.YES_OPTION) {
                     stop();
+                    System.exit(1);
                 }
                 seed = 3;
                 LEVEL = 0;
@@ -113,33 +129,38 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        l.tick();
+        if(!isPaused) {
+            l.tick();
+        }
     }
 
     private void render() {
-        BufferStrategy bs =  this.getBufferStrategy();
+        if(!isPaused) {
+            BufferStrategy bs =  this.getBufferStrategy();
 
-        if(bs == null) {
-            this.createBufferStrategy(3);
-            return;
+            if(bs == null) {
+                this.createBufferStrategy(3);
+                return;
+            }
+
+            Graphics g = bs.getDrawGraphics();
+            g.setColor(Color.white);
+            g.fillRect(0, 0, WIDTH, HEIGHT);
+
+            g.setColor(Color.red);
+            g.drawString("Level " + LEVEL, 230, 25);
+
+            g.setColor(Color.black);
+            g.drawString("Score : " + SCORE, 400, 20);
+
+
+            player.render(g);
+
+            l.render(g);
+
+            g.dispose();
+            bs.show();
         }
-
-        Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.white);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
-
-        g.setColor(Color.red);
-        g.drawString("Level " + LEVEL, 200, 20);
-
-        g.setColor(Color.black);
-        g.drawString("Score : " + SCORE, 400, 20);
-
-        player.render(g);
-
-        l.render(g);
-
-        g.dispose();
-        bs.show();
     }
 
     public static void main(String[] args) {

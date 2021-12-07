@@ -19,6 +19,13 @@ public class KeyInput extends KeyAdapter {
         else if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) {
             obj.setX(obj.getX() + obj.getSpeedX());
         }
+
+        if(key == KeyEvent.VK_P) {
+            Game.isPaused = true;
+        }
+        if(key == KeyEvent.VK_R) {
+            Game.isPaused = false;
+        }
     }
 
     public void keyReleased(KeyEvent e) {

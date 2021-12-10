@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 
+
 public abstract class GameObject {
-    protected int posX, posY, id, speedX = 1, speedY = 1, size;
-    protected int lower_boundX = 0, upper_boundX = 500, lower_boundY = 0, upper_boundY = 500;
+    protected int posX, posY, id, speedX, speedY, size;
+    protected int lower_boundX = 0, upper_boundX = Game.WIDTH, lower_boundY = 0, upper_boundY = Game.HEIGHT;
     protected BufferedImage img;
 
     protected GameObject(int posX, int posY, int id, int size, String url) {
@@ -16,7 +17,7 @@ public abstract class GameObject {
         this.id = id;
         this.size = size;
         try {
-            img = ImageIO.read(new File(url));
+            img = ImageIO.read(new File(Game.gameCurrentPath + url));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -26,14 +27,14 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
 
     public void setX(int x) {
-        if(x >= lower_boundX && x + size <= Game.WIDTH) {
+        if(x >= lower_boundX && x + size <= upper_boundX) {
             this.posX = x;
         }
     }
     public int getX() {return posX;}
 
     public void setY(int y) {
-        if(y >= lower_boundY && y + size <= Game.HEIGHT) {
+        if(y >= lower_boundY && y + size <= upper_boundY) {
             this.posY = y;
         }
     }

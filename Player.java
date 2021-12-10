@@ -9,7 +9,11 @@ public class Player extends GameObject {
     private int health = 100;
 
     public Player(int posX, int posY, int id, int size) {
+<<<<<<< Updated upstream
         super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/run.png");
+=======
+        super(posX, posY, id, size, "/Images/run.png");
+>>>>>>> Stashed changes
 
         speedX = 10;
         speedY = 0;

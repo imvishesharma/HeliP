@@ -7,7 +7,7 @@ public class Window extends Canvas {
     public Window(final int width, final int height, Game game) {
         JFrame frame = new JFrame("HeliP");
 
-        frame.setSize(500, 500);
+        frame.setSize(width, height);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 

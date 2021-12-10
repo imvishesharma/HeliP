@@ -7,7 +7,11 @@ import java.awt.Color;
 
 public class Bullet extends GameObject {
     public Bullet(int posX, int posY, int id, int size) {
+<<<<<<< Updated upstream
         super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/bullet-2.png");
+=======
+        super(posX, posY, id, size, "/Images/bullet-2.png");
+>>>>>>> Stashed changes
 
         speedX = 0;
         speedY = 2;
@@ -20,8 +24,8 @@ public class Bullet extends GameObject {
         int X = Game.player.getX();
         int Y = Game.player.getY();
         if(X <= this.posX && posX <= X + 24 && Y <= this.posY && posY <= Y + 32) {
-            this.posX = 550;
-            this.posY = 550;
+            this.posX = Game.WIDTH + 50;
+            this.posY = Game.HEIGHT + 50;
             Game.player.decHealth(10);
         }
     }

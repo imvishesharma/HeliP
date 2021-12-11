@@ -1,4 +1,4 @@
-package HeliP;
+package helip;
 
 import java.util.*;
 import java.awt.Graphics;

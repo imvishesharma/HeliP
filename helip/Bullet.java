@@ -1,9 +1,8 @@
-package HeliP;
+package helip;
 
 import java.awt.Graphics;
 import java.awt.Color;
 
-//import HeliP.GameObject;
 
 public class Bullet extends GameObject {
     public Bullet(int posX, int posY, int id, int size) {

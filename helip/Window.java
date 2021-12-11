@@ -1,4 +1,4 @@
-package HeliP;
+package helip;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;

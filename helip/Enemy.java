@@ -1,11 +1,10 @@
-package HeliP;
+package helip;
 
 import java.awt.Graphics;
 import java.awt.Color;
 import java.util.Random;
 import java.util.LinkedList;
 
-//import HeliP.Bullet;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;

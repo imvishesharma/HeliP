@@ -1,4 +1,4 @@
-package HeliP;
+package helip;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -10,13 +10,13 @@ import java.util.LinkedList;
 
 import javax.swing.*;
 
-import HeliP.Window;
-import HeliP.GameObject;
-import HeliP.KeyInput;
-import HeliP.Player;
-import HeliP.Enemy;
-import HeliP.Bullet;
-import HeliP.Level;
+import helip.Window;
+import helip.GameObject;
+import helip.KeyInput;
+import helip.Player;
+import helip.Enemy;
+import helip.Bullet;
+import helip.Level;
 
 
 
@@ -36,7 +36,8 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         try {
             gameCurrentPath = new java.io.File(".").getCanonicalPath();
-            gameCurrentPath += "/HeliP";
+            //gameCurrentPath += "/helip";
+            System.out.println(gameCurrentPath);
 
         }  catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +118,7 @@ public class Game extends Canvas implements Runnable {
                         levelTimer++;
                         System.out.println("FPS : " + frames);
                     }
-                  
+
                     timer += 1000;
                     //System.out.println(isPaused == false ? "FALSE" : "TRUE");
                     frames = 0;
@@ -170,9 +171,6 @@ public class Game extends Canvas implements Runnable {
 
             g.setColor(Color.black);
             g.drawString("Score : " + SCORE, WIDTH - 100, 20);
-          
-            g.setColor(Color.red);
-            g.drawString("Level " + LEVEL, 230, 25);
 
             g.setColor(Color.black);
             g.drawString("Score : " + SCORE, 400, 20);

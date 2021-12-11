@@ -1,9 +1,7 @@
-package HeliP;
+package helip;
 
 import java.awt.*;
 import javax.swing.*;
-
-//import HeliP.GameObject;
 
 public class Player extends GameObject {
     private int health = 100;

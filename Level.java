@@ -30,8 +30,10 @@ public class Level {
 
     public void update() {
         for(Enemy e : enemies) {
-            if(r.nextInt(100) > SEED) {
-                e.createBullet();
+            int x = r.nextInt(2000);
+            if(x > 30*SEED) {
+                //System.out.println("X = " + x);
+                e.createBullet(Math.max(1, 6 - (int)SEED/10));
             }
         }
     }

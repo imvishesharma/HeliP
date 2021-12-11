@@ -18,7 +18,7 @@ public class Enemy extends GameObject {
     private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
     public Enemy(int posX, int posY, int id, int size, int initDirec) {
-        super(posX, posY, id, size, Game.gameCurrentPath + "/Images/hc.png");
+        super(posX, posY, id, size, "/Images/hc.png");
 
         try {
             i1 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc.png"));
@@ -45,8 +45,9 @@ public class Enemy extends GameObject {
         speedY = 0;
     }
 
-    public void createBullet() {
+    public void createBullet(int vel) {
         Bullet b = new Bullet(posX, posY, 124, 16);
+        b.setSpeedY(vel);
         bullets.add(b);
     }
 

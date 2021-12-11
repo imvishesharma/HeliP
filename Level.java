@@ -19,7 +19,7 @@ public class Level {
 
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
-        for(int i = 0; i < seed + r.nextInt(seed*2); i++) {
+        for(int i = 0; i < seed; i++) {
             positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(100));
         }
 

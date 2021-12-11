@@ -18,20 +18,16 @@ public class Enemy extends GameObject {
     private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
     public Enemy(int posX, int posY, int id, int size, int initDirec) {
-<<<<<<< Updated upstream
-        super(posX, posY, id, size, "/Users/inq/Desktop/JAVA/HeliP/hc.png");
-=======
         super(posX, posY, id, size, "/Images/hc.png");
->>>>>>> Stashed changes
 
         try {
-            i1 = ImageIO.read(new File("/Users/inq/Desktop/JAVA/HeliP/hc.png"));
+            i1 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            i2 = ImageIO.read(new File("/Users/inq/Desktop/JAVA/HeliP/hc1.png"));
+            i2 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc1.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,15 +45,10 @@ public class Enemy extends GameObject {
         speedY = 0;
     }
 
-<<<<<<< Updated upstream
-    public void createBullet() {
-        bullets.add(new Bullet(posX, posY, 124, 16));
-=======
     public void createBullet(int vel) {
         Bullet b = new Bullet(posX, posY, 124, 16);
         b.setSpeedY(vel);
         bullets.add(b);
->>>>>>> Stashed changes
     }
 
     public void tick() {

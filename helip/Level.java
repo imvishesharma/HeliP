@@ -8,7 +8,7 @@ public class Level {
     private LinkedList<Enemy> enemies;
     private Random r;
 
-    public Level(int seed, int width, int height) {
+    public Level(int seed, int prevEnemy, int width, int height) {
         WIDTH = width;
         HEIGHT = height;
         SEED = seed;
@@ -19,7 +19,7 @@ public class Level {
 
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
-        for(int i = 0; i < seed; i++) {
+        for(int i = 0; i < prevEnemy + 1 + r.nextInt(seed); i++) {
             positions.put(r.nextInt(WIDTH - 16), 30 + r.nextInt(100));
         }
 
@@ -28,14 +28,31 @@ public class Level {
         }
     }
 
-    public void update() {
+    public int update() {
+        int bulletsCountPerUpdate = 0;
         for(Enemy e : enemies) {
             int x = r.nextInt(2000);
-            if(x > 30*SEED) {
-                //System.out.println("X = " + x);
-                e.createBullet(Math.max(1, 6 - (int)SEED/10));
+            if(x > 500) {
+                //e.createBullet(Math.max(3, 10 - (int)SEED/5));
+                bulletsCountPerUpdate++;
+                e.createBullet(3);
             }
         }
+
+        return bulletsCountPerUpdate;
+        //System.out.println("update() : Seed = " + SEED + ", Bullets = " + bulletsCountPerUpdate);
+    }
+
+    public int bulletCount() {
+        int total = 0;
+        for(Enemy e : enemies) {
+            total += e.countBullet();
+        }
+        return total;
+    }
+
+    public int enemyCount() {
+        return enemies.size();
     }
 
     public void tick() {

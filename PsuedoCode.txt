@@ -1,0 +1,12 @@
+function Level(Argument SEED, Argument WIDTH, Argument HEIGHT)
+    Initialize SEED number of enemies and randomly place
+    them on the screen within the bounds of current Window
+    with constraints width WIDTH and height 100
+
+    initEnemies()
+
+    Update the UI by 1 sec which will create Bullets 
+    having some probability p associated with its creation
+
+    createBullets()
+end

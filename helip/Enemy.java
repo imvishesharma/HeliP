@@ -50,6 +50,10 @@ public class Enemy extends GameObject {
         bullets.add(b);
     }
 
+    public int countBullet() {
+        return bullets.size();
+    }
+
     public void tick() {
         if(faceEast) {
             if(posX + size > Game.WIDTH) {
@@ -70,7 +74,7 @@ public class Enemy extends GameObject {
 
         for(int i = 0; i < bullets.size(); i++) {
             bullets.get(i).tick();
-            if(bullets.get(i).posY > Game.HEIGHT - 30) {
+            if(bullets.get(i).posY >= Game.HEIGHT - 30) {
                 bullets.remove(i);
             }
         }

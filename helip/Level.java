@@ -61,7 +61,7 @@ public class Level {
     }
 
     public void addHelper() {
-        if(r.nextInt(1000) < 100) {
+        if(r.nextInt(1000) < 500) {
             Helper h = new Helper(16 + r.nextInt()%(WIDTH - 15), 150 + r.nextInt()%100, 167, 16, r.nextInt()%2);
             helpers.add(h);
         }
@@ -89,7 +89,16 @@ public class Level {
 
         for(int i = 0; i < medipacks.size(); i++) {
             medipacks.get(i).tick();
-            if(medipacks.get(i).getY() > HEIGHT) {
+
+            int X = Game.player.getX();
+            int Y = Game.player.getY();
+            boolean collided = false;
+            if(X <= medipacks.get(i).getX() && medipacks.get(i).getX() <= X + 32 && Y <= medipacks.get(i).getY() && medipacks.get(i).getY() <= Y + 32) {
+                Game.player.incHealth(20);
+                collided = true;
+            }
+
+            if(medipacks.get(i).getY() > HEIGHT || collided) {
                 medipacks.remove(i);
             }
         }

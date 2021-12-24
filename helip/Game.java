@@ -18,8 +18,7 @@ import helip.Enemy;
 import helip.Bullet;
 import helip.Level;
 import helip.Helper;
-
-
+import helip.MedicPack;
 
 public class Game extends Canvas implements Runnable {
     private static int SCORE = 1, LEVEL = 0;
@@ -33,7 +32,6 @@ public class Game extends Canvas implements Runnable {
     public static boolean isPaused = false;
     public static int START_SEED;
     public static String gameCurrentPath;
-    private static Helper hp; 
 
     private Level l;
 
@@ -97,11 +95,10 @@ public class Game extends Canvas implements Runnable {
 
             int levelTimer = 1;
 
-            while(player.isAlive() && levelTimer <= 10) {
+            while(player.isAlive() && levelTimer <= 50) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
                 lastTime = now;
-                hp = new Helper();
 
                 while(delta >= 1) {
                     tick();
@@ -124,6 +121,8 @@ public class Game extends Canvas implements Runnable {
                     if(!isPaused) {
                         SCORE++;
                         levelTimer++;
+                        l.addHelper();
+                        l.genMediPack();
                         //System.out.println("FPS : " + frames);
                     }
 
@@ -159,12 +158,6 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         if(!isPaused) {
             l.tick();
-            if(hp){
-                hp.tick();
-                if(hp.getX()<0||hp.getX()>WIDTH)
-                        hp=NULL;
-
-            }
         }
     }
 
@@ -187,11 +180,8 @@ public class Game extends Canvas implements Runnable {
             g.drawString("Score : " + SCORE, WIDTH - 100, 20);
 
             player.render(g);
-
             l.render(g);
-            if(hp)
-                hp.render(g);
-
+            
             g.dispose();
             bs.show();
         }

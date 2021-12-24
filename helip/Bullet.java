@@ -19,7 +19,7 @@ public class Bullet extends GameObject {
         // Checking if Bullet hits player
         int X = Game.player.getX();
         int Y = Game.player.getY();
-        if(X <= this.posX && posX <= X + 24 && Y <= this.posY && posY <= Y + 32) {
+        if(X <= this.posX && this.posX <= X + 24 && Y <= this.posY && this.posY <= Y + 32) {
             this.posX = Game.WIDTH + 50;
             this.posY = Game.HEIGHT + 50;
             Game.player.decHealth(10);

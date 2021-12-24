@@ -18,7 +18,8 @@ import helip.Enemy;
 import helip.Bullet;
 import helip.Level;
 import helip.Helper;
-import helip.MedicPack;
+
+
 
 public class Game extends Canvas implements Runnable {
     private static int SCORE = 1, LEVEL = 0;
@@ -32,8 +33,7 @@ public class Game extends Canvas implements Runnable {
     public static boolean isPaused = false;
     public static int START_SEED;
     public static String gameCurrentPath;
-    private int MAX_LEVEL_TIME = 50;
-    //private static Helper hp;
+    private static Helper hp; 
 
     private Level l;
 
@@ -46,7 +46,6 @@ public class Game extends Canvas implements Runnable {
         }  catch (Exception e) {
             e.printStackTrace();
         }
-        //hp = null;
 
         player = new Player(WIDTH/2 - 16, HEIGHT - 22, 123, 32);
         START_SEED = 5;
@@ -98,10 +97,11 @@ public class Game extends Canvas implements Runnable {
 
             int levelTimer = 1;
 
-            while(player.isAlive() && levelTimer <= MAX_LEVEL_TIME) {
+            while(player.isAlive() && levelTimer <= 10) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
                 lastTime = now;
+                hp = new Helper();
 
                 while(delta >= 1) {
                     tick();
@@ -114,6 +114,7 @@ public class Game extends Canvas implements Runnable {
                 if(System.currentTimeMillis() - timer2 > gap2) {
                     if(!isPaused) {
                         //System.out.println("Level " + LEVEL + ", Bullets " + l.bulletCount());
+
                         int x = l.update();
                         System.out.print(x + ", ");
                     }
@@ -123,9 +124,6 @@ public class Game extends Canvas implements Runnable {
                     if(!isPaused) {
                         SCORE++;
                         levelTimer++;
-                        l.addHelper();
-                        l.genMediPack();
-                        //hp.createMedicPack(2);
                         //System.out.println("FPS : " + frames);
                     }
 
@@ -161,6 +159,12 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         if(!isPaused) {
             l.tick();
+            if(hp){
+                hp.tick();
+                if(hp.getX()<0||hp.getX()>WIDTH)
+                        hp=NULL;
+
+            }
         }
     }
 
@@ -185,6 +189,8 @@ public class Game extends Canvas implements Runnable {
             player.render(g);
 
             l.render(g);
+            if(hp)
+                hp.render(g);
 
             g.dispose();
             bs.show();

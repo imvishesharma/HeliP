@@ -6,6 +6,9 @@ import java.awt.Graphics;
 public class Level {
     private int WIDTH, HEIGHT, SEED;
     private LinkedList<Enemy> enemies;
+    private LinkedList<Helper> helpers;
+    private LinkedList<MedicPack> medipacks;
+
     private Random r;
 
     public Level(int seed, int prevEnemy, int width, int height) {
@@ -14,6 +17,8 @@ public class Level {
         SEED = seed;
 
         enemies = new LinkedList<Enemy>();
+        helpers = new LinkedList<Helper>();
+        medipacks = new LinkedList<MedicPack>();
 
         r = new Random();
 
@@ -55,9 +60,38 @@ public class Level {
         return enemies.size();
     }
 
+    public void addHelper() {
+        if(r.nextInt(1000) < 100) {
+            Helper h = new Helper(16 + r.nextInt()%(WIDTH - 15), 150 + r.nextInt()%100, 167, 16, r.nextInt()%2);
+            helpers.add(h);
+        }
+    }
+
+    public void genMediPack() {
+        for(Helper h : helpers) {
+            MedicPack b = new MedicPack(h.getX(), h.getY(), 111, 32);
+            b.setSpeedY(2);
+            medipacks.add(b);
+        }
+    }
+
     public void tick() {
         for(Enemy e : enemies) {
             e.tick();
+        }
+
+        for(int i = 0; i < helpers.size(); i++) {
+            helpers.get(i).tick();
+            if(helpers.get(i).posX < 0 || helpers.get(i).posX >= WIDTH) {
+                helpers.remove(i);
+            }
+        }
+
+        for(int i = 0; i < medipacks.size(); i++) {
+            medipacks.get(i).tick();
+            if(medipacks.get(i).getY() > HEIGHT) {
+                medipacks.remove(i);
+            }
         }
     }
 
@@ -65,6 +99,14 @@ public class Level {
         //g.drawString("Level " + SEED, 200, 20);
         for(Enemy e : enemies) {
             e.render(g);
+        }
+
+        for(Helper h : helpers) {
+            h.render(g);
+        }
+
+        for(MedicPack m : medipacks) {
+            m.render(g);
         }
     }
 }

@@ -36,6 +36,8 @@ public class Game extends Canvas implements Runnable {
 
     public static Level l;
 
+    private int TIME_PER_LEVEL = 15, MAX_LEVEL = 5;
+
     public Game() {
         try {
             gameCurrentPath = new java.io.File(".").getCanonicalPath();
@@ -90,13 +92,13 @@ public class Game extends Canvas implements Runnable {
             l = new Level(seed, currEnemy, WIDTH, HEIGHT);
             currEnemy = l.enemyCount();
 
-            player.incHealth(20);
+            //player.incHealth(20);
             player.setX(WIDTH/2 - 16);
             player.setY(HEIGHT - 62);
 
             int levelTimer = 1;
 
-            while(player.isAlive() && levelTimer <= 50) {
+            while(player.isAlive() && levelTimer <= TIME_PER_LEVEL && LEVEL <= MAX_LEVEL) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
                 lastTime = now;
@@ -114,7 +116,7 @@ public class Game extends Canvas implements Runnable {
                         //System.out.println("Level " + LEVEL + ", Bullets " + l.bulletCount());
 
                         int x = l.update();
-                        System.out.print(x + ", ");
+                        //System.out.print(x + ", ");
                     }
                     timer2 += gap2;
                 }
@@ -138,7 +140,7 @@ public class Game extends Canvas implements Runnable {
 
             if(!player.isAlive()) {
                 l = null;
-                userOption = JOptionPane.showConfirmDialog(this, "Want to replay?");
+                userOption = JOptionPane.showConfirmDialog(this, "Your Score : " + SCORE + ". Want to replay?");
                 if(userOption != JOptionPane.YES_OPTION) {
                     //stop();
                     System.exit(0);
@@ -147,10 +149,13 @@ public class Game extends Canvas implements Runnable {
                 LEVEL = 0;
                 SCORE = 1;
                 player.incHealth(100);
-            } else {
+            } else if(LEVEL != MAX_LEVEL) {
                 JOptionPane.showMessageDialog(this, "Go to next level");
                 seed++;
                 System.out.println();
+            } else {
+                JOptionPane.showMessageDialog(this, "Great! You have passed All Level");
+                System.exit(0);
             }
         }
         //stop();

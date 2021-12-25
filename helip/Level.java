@@ -34,12 +34,12 @@ public class Level {
             enemies.add(new Enemy(p.getKey(), p.getValue(), 124, 16, r.nextInt(2)));
         }
 
-        int nBarriers = 2 + r.nextInt(SEED - 2);
+        int nBarriers = SEED + r.nextInt(SEED);
 
         positions.clear();
 
         for(int i = 0; i < nBarriers; i++) {
-            positions.put(r.nextInt(WIDTH-16), 400 + r.nextInt(100));
+            positions.put(r.nextInt(WIDTH - 16), 400 + r.nextInt(50));
         }
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
@@ -76,7 +76,7 @@ public class Level {
 
     public void addHelper() {
         if(r.nextInt(1000) < 100) {
-            Helper h = new Helper(16 + r.nextInt()%(WIDTH - 15), 150 + r.nextInt()%100, 167, 16, r.nextInt()%2);
+            Helper h = new Helper(200 + r.nextInt(100), 150 + r.nextInt(50), 167, 16, r.nextInt()%2);
             helpers.add(h);
         }
     }

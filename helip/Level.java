@@ -6,6 +6,10 @@ import java.awt.Graphics;
 public class Level {
     private int WIDTH, HEIGHT, SEED;
     private LinkedList<Enemy> enemies;
+    private LinkedList<Helper> helpers;
+    private LinkedList<MedicPack> medipacks;
+    private LinkedList<Barrier> barriers;
+
     private Random r;
 
     public Level(int seed, int prevEnemy, int width, int height) {
@@ -14,6 +18,9 @@ public class Level {
         SEED = seed;
 
         enemies = new LinkedList<Enemy>();
+        helpers = new LinkedList<Helper>();
+        medipacks = new LinkedList<MedicPack>();
+        barriers = new LinkedList<Barrier>();
 
         r = new Random();
 
@@ -25,6 +32,18 @@ public class Level {
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
             enemies.add(new Enemy(p.getKey(), p.getValue(), 124, 16, r.nextInt(2)));
+        }
+
+        int nBarriers = 2 + r.nextInt(SEED - 2);
+
+        positions.clear();
+
+        for(int i = 0; i < nBarriers; i++) {
+            positions.put(r.nextInt(WIDTH-16), 400 + r.nextInt(100));
+        }
+
+        for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
+            barriers.add(new Barrier(p.getKey(), p.getValue(), 124, 32));
         }
     }
 
@@ -55,9 +74,61 @@ public class Level {
         return enemies.size();
     }
 
+    public void addHelper() {
+        if(r.nextInt(1000) < 100) {
+            Helper h = new Helper(16 + r.nextInt()%(WIDTH - 15), 150 + r.nextInt()%100, 167, 16, r.nextInt()%2);
+            helpers.add(h);
+        }
+    }
+
+    public void genMediPack() {
+        for(Helper h : helpers) {
+            MedicPack b = new MedicPack(h.getX(), h.getY(), 111, 32);
+            b.setSpeedY(2);
+            medipacks.add(b);
+        }
+    }
+
+    public int getSizeBarrier() {
+        return barriers.size();
+    }
+
+    public Barrier getIBarrier(int i) {
+        return barriers.get(i);
+    }
+
     public void tick() {
         for(Enemy e : enemies) {
             e.tick();
+        }
+
+        for(int i = 0; i < helpers.size(); i++) {
+            helpers.get(i).tick();
+            if(helpers.get(i).posX < 0 || helpers.get(i).posX >= WIDTH) {
+                helpers.remove(i);
+            }
+        }
+
+        for(int i = 0; i < medipacks.size(); i++) {
+            medipacks.get(i).tick();
+
+            int X = Game.player.getX();
+            int Y = Game.player.getY();
+            boolean collided = false;
+            if(X <= medipacks.get(i).getX() && medipacks.get(i).getX() <= X + 32 && Y <= medipacks.get(i).getY() && medipacks.get(i).getY() <= Y + 32) {
+                Game.player.incHealth(20);
+                collided = true;
+            }
+
+            if(medipacks.get(i).getY() > HEIGHT || collided) {
+                medipacks.remove(i);
+            }
+        }
+
+        for(int i = 0; i < barriers.size(); i++) {
+            if(barriers.get(i).getHealth() <= 0) {
+                barriers.remove(i);
+            }
         }
     }
 
@@ -65,6 +136,18 @@ public class Level {
         //g.drawString("Level " + SEED, 200, 20);
         for(Enemy e : enemies) {
             e.render(g);
+        }
+
+        for(Helper h : helpers) {
+            h.render(g);
+        }
+
+        for(MedicPack m : medipacks) {
+            m.render(g);
+        }
+
+        for(Barrier b :barriers) {
+            b.render(g);
         }
     }
 }

@@ -78,7 +78,6 @@ public class Enemy extends GameObject {
                 bullets.remove(i);
             }
         }
-
     }
 
     public void render(Graphics g) {

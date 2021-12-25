@@ -17,8 +17,9 @@ import helip.Player;
 import helip.Enemy;
 import helip.Bullet;
 import helip.Level;
-
-
+import helip.Helper;
+import helip.MedicPack;
+import helip.Barrier;
 
 public class Game extends Canvas implements Runnable {
     private static int SCORE = 1, LEVEL = 0;
@@ -33,7 +34,7 @@ public class Game extends Canvas implements Runnable {
     public static int START_SEED;
     public static String gameCurrentPath;
 
-    private Level l;
+    public static Level l;
 
     public Game() {
         try {
@@ -84,7 +85,6 @@ public class Game extends Canvas implements Runnable {
             timer = System.currentTimeMillis();
             timer2 = System.currentTimeMillis();
             //gap2 = Math.min(50*seed, 500);
-
             ++LEVEL;
 
             l = new Level(seed, currEnemy, WIDTH, HEIGHT);
@@ -96,7 +96,7 @@ public class Game extends Canvas implements Runnable {
 
             int levelTimer = 1;
 
-            while(player.isAlive() && levelTimer <= 10) {
+            while(player.isAlive() && levelTimer <= 50) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
                 lastTime = now;
@@ -122,6 +122,8 @@ public class Game extends Canvas implements Runnable {
                     if(!isPaused) {
                         SCORE++;
                         levelTimer++;
+                        l.addHelper();
+                        l.genMediPack();
                         //System.out.println("FPS : " + frames);
                     }
 
@@ -168,7 +170,6 @@ public class Game extends Canvas implements Runnable {
                 this.createBufferStrategy(3);
                 return;
             }
-
             Graphics g = bs.getDrawGraphics();
             g.setColor(Color.white);
             g.fillRect(0, 0, WIDTH, HEIGHT);
@@ -180,7 +181,6 @@ public class Game extends Canvas implements Runnable {
             g.drawString("Score : " + SCORE, WIDTH - 100, 20);
 
             player.render(g);
-
             l.render(g);
 
             g.dispose();

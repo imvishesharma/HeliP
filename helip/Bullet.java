@@ -25,6 +25,7 @@ public class Bullet extends GameObject {
             Game.player.decHealth(10);
         }
 
+        // Checking if Bullet hits Barrier
         for(int i = 0; i < Game.l.getSizeBarrier(); i++) {
             X = Game.l.getIBarrier(i).getX();
             Y = Game.l.getIBarrier(i).getY();

@@ -3,7 +3,6 @@ package helip;
 import java.awt.Graphics;
 import java.awt.Color;
 
-
 public class Bullet extends GameObject {
     public Bullet(int posX, int posY, int id, int size) {
 
@@ -19,10 +18,21 @@ public class Bullet extends GameObject {
         // Checking if Bullet hits player
         int X = Game.player.getX();
         int Y = Game.player.getY();
+
         if(X <= this.posX && this.posX <= X + 24 && Y <= this.posY && this.posY <= Y + 32) {
             this.posX = Game.WIDTH + 50;
             this.posY = Game.HEIGHT + 50;
             Game.player.decHealth(10);
+        }
+
+        for(int i = 0; i < Game.l.getSizeBarrier(); i++) {
+            X = Game.l.getIBarrier(i).getX();
+            Y = Game.l.getIBarrier(i).getY();
+            if(X <= this.posX && this.posX <= X + 32 && Y <= this.posY + 8 && this.posY <= Y + 16) {
+                this.posX = Game.WIDTH + 50;
+                this.posY = Game.HEIGHT + 50;
+                Game.l.getIBarrier(i).decHealth();
+            }
         }
     }
 

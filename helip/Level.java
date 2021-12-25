@@ -8,6 +8,7 @@ public class Level {
     private LinkedList<Enemy> enemies;
     private LinkedList<Helper> helpers;
     private LinkedList<MedicPack> medipacks;
+    private LinkedList<Barrier> barriers;
 
     private Random r;
 
@@ -19,6 +20,7 @@ public class Level {
         enemies = new LinkedList<Enemy>();
         helpers = new LinkedList<Helper>();
         medipacks = new LinkedList<MedicPack>();
+        barriers = new LinkedList<Barrier>();
 
         r = new Random();
 
@@ -30,6 +32,18 @@ public class Level {
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
             enemies.add(new Enemy(p.getKey(), p.getValue(), 124, 16, r.nextInt(2)));
+        }
+
+        int nBarriers = 2 + r.nextInt(SEED - 2);
+
+        positions.clear();
+
+        for(int i = 0; i < nBarriers; i++) {
+            positions.put(r.nextInt(WIDTH-16), 400 + r.nextInt(100));
+        }
+
+        for(Map.Entry<Integer, Integer> p : positions.entrySet()) {
+            barriers.add(new Barrier(p.getKey(), p.getValue(), 124, 32));
         }
     }
 
@@ -61,7 +75,7 @@ public class Level {
     }
 
     public void addHelper() {
-        if(r.nextInt(1000) < 500) {
+        if(r.nextInt(1000) < 100) {
             Helper h = new Helper(16 + r.nextInt()%(WIDTH - 15), 150 + r.nextInt()%100, 167, 16, r.nextInt()%2);
             helpers.add(h);
         }
@@ -73,6 +87,14 @@ public class Level {
             b.setSpeedY(2);
             medipacks.add(b);
         }
+    }
+
+    public int getSizeBarrier() {
+        return barriers.size();
+    }
+
+    public Barrier getIBarrier(int i) {
+        return barriers.get(i);
     }
 
     public void tick() {
@@ -102,6 +124,12 @@ public class Level {
                 medipacks.remove(i);
             }
         }
+
+        for(int i = 0; i < barriers.size(); i++) {
+            if(barriers.get(i).getHealth() <= 0) {
+                barriers.remove(i);
+            }
+        }
     }
 
     public void render(Graphics g) {
@@ -116,6 +144,10 @@ public class Level {
 
         for(MedicPack m : medipacks) {
             m.render(g);
+        }
+
+        for(Barrier b :barriers) {
+            b.render(g);
         }
     }
 }

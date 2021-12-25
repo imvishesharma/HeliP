@@ -19,6 +19,7 @@ import helip.Bullet;
 import helip.Level;
 import helip.Helper;
 import helip.MedicPack;
+import helip.Barrier;
 
 public class Game extends Canvas implements Runnable {
     private static int SCORE = 1, LEVEL = 0;
@@ -33,7 +34,7 @@ public class Game extends Canvas implements Runnable {
     public static int START_SEED;
     public static String gameCurrentPath;
 
-    private Level l;
+    public static Level l;
 
     public Game() {
         try {
@@ -181,7 +182,7 @@ public class Game extends Canvas implements Runnable {
 
             player.render(g);
             l.render(g);
-            
+
             g.dispose();
             bs.show();
         }

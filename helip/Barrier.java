@@ -6,8 +6,8 @@ import java.awt.Color;
 public class Barrier extends GameObject {
     private int health;
 
-    public Barrier(int posX, int posY, int id, int size) {
-        super(posX, posY, id, size, "/Images/barrier3.png");
+    public Barrier(int posX, int posY, int size) {
+        super(posX, posY, GameObject.GameObjectID.BARRIER, size, 5);
         health = 20;
         speedX = 0;
         speedY = 0;
@@ -27,6 +27,6 @@ public class Barrier extends GameObject {
 
     public void render(Graphics g) {
         g.setColor(Color.black);
-        g.drawImage(img, posX, posY, null);
+        g.fillRect(posX, posY, sizeX, sizeY);
     }
 }

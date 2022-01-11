@@ -1,0 +1,6 @@
+Seed 5
+initialEnemies 7
+initialBarriers 10
+bulletVelocity 3
+bulletDropProbability 1000
+helperHeliProbability 500

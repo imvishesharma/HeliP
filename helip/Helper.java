@@ -11,30 +11,17 @@ import java.io.File;
 
 public class Helper extends GameObject {
     private boolean faceEast;
-    private BufferedImage i1, i2;
 
-    public Helper(int posX, int posY, int id, int size, int initDirec) {
-        super(posX, posY, id, size, "/Images/hlpr1.png");
-
-        try {
-            i1 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hlpr2.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            i2 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hlpr1.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Helper(int posX, int posY, int size, int initDirec) {
+        super(posX, posY, GameObject.GameObjectID.HELPER, size, size);
 
         if(initDirec == 0) {
             faceEast = true;
-            this.setImage(i1);
+            this.setImage(GameWindow.gameUtil.helperHeliFR);
         }
         else {
             faceEast = false;
-            this.setImage(i2);
+            this.setImage(GameWindow.gameUtil.helperHeliFL);
         }
 
         speedX = 2;
@@ -46,12 +33,12 @@ public class Helper extends GameObject {
             posX += speedX;
         }
         else {
-            posX-=speedX;
+            posX -= speedX;
         }
     }
 
     public void render(Graphics g) {
         g.setColor(Color.black);
-        g.drawImage(img, posX, posY, null);
+        g.drawImage(img, posX, posY, sizeX, sizeY, null);
     }
 }

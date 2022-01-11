@@ -1,4 +1,4 @@
 foo:
-	javac helip/Game.java
-	java helip.Game
+	javac helip/GameWindow.java
+	java helip.GameWindow
 	rm helip/*.class

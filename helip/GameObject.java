@@ -2,46 +2,42 @@ package helip;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
-
 
 public abstract class GameObject {
-    protected int posX, posY, id, speedX, speedY, size;
-    protected int lower_boundX = 0, upper_boundX = Game.WIDTH, lower_boundY = 0, upper_boundY = Game.HEIGHT;
+
+    public enum GameObjectID {ENEMY, HELPER, PLAYER, BULLET, MEDIC, BARRIER};
+
+    protected int posX, posY, speedX, speedY, sizeX, sizeY;
+    protected int lower_boundX = 0, upper_boundX = GameWindow.WIDTH, lower_boundY = 0, upper_boundY = GameWindow.HEIGHT;
+    protected GameObjectID id;
     protected BufferedImage img;
 
-    protected GameObject(int posX, int posY, int id, int size, String url) {
+    protected GameObject(int posX, int posY, GameObjectID id, int sizeX, int sizeY) {
         this.posX = posX;
         this.posY = posY;
         this.id = id;
-        this.size = size;
-        try {
-            img = ImageIO.read(new File(Game.gameCurrentPath + url));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
+        this.img = img;
+        this.speedX = 1;
+        this.speedY = 0;
     }
 
     public abstract void tick();
     public abstract void render(Graphics g);
 
     public void setX(int x) {
-        if(x >= lower_boundX && x + size <= upper_boundX) {
-            this.posX = x;
-        }
+        this.posX = x;
     }
     public int getX() {return posX;}
 
     public void setY(int y) {
-        if(y >= lower_boundY && y + size <= upper_boundY) {
-            this.posY = y;
-        }
+        this.posY = y;
     }
     public int getY() {return posY;}
 
-    public void setID(int id) {this.id = id;}
-    public int getID() {return id;}
+    public void setID(GameObjectID id) {this.id = id;}
+    public GameObjectID getID() {return id;}
 
     public void setSpeedX(int spdX) {this.speedX = spdX;}
     public int getSpeedX() {return speedX;}
@@ -51,5 +47,12 @@ public abstract class GameObject {
 
     public void setImage(BufferedImage img) {
         this.img = img;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+    public int getSizeY() {
+        return sizeY;
     }
 }

@@ -1,199 +1,108 @@
 package helip;
 
-import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-import java.awt.Color;
-import java.io.File;
 
-import java.util.LinkedList;
-
-import javax.swing.*;
-
-import helip.Window;
-import helip.GameObject;
-import helip.KeyInput;
-import helip.Player;
-import helip.Enemy;
-import helip.Bullet;
-import helip.Level;
-import helip.Helper;
-import helip.MedicPack;
-import helip.Barrier;
-
-public class Game extends Canvas implements Runnable {
-    private static int SCORE = 1, LEVEL = 0;
-    public static final int WIDTH = 500, HEIGHT = 600;
-
-    public static int currEnemy = 5;
-
-    private Thread thread;
+public class Game {
     public static Player player;
-    private static boolean running = true;
-    public static boolean isPaused = false;
-    public static int START_SEED;
-    public static String gameCurrentPath;
+    private static Level level;
 
-    public static Level l;
+    public static boolean isPaused;
 
-    private int TIME_PER_LEVEL = 15, MAX_LEVEL = 5;
+    private static long score;
+    private DiffSetting ds;
 
-    public Game() {
-        try {
-            gameCurrentPath = new java.io.File(".").getCanonicalPath();
-            //gameCurrentPath += "/helip";
-            System.out.println(gameCurrentPath);
+    public Game(DiffSetting ds) {
+        this.ds = ds;
 
-        }  catch (Exception e) {
-            e.printStackTrace();
+        player = new Player(32);
+        level = new Level(ds.getSeed(), ds.getNEnemy(), ds.getNBarrier(), ds.getBulletVel(), ds.getBulletProb(), ds.getHelperProb(), 10);
+        score = 0;
+        isPaused = false;
+    }
+
+    public void update() {
+        level.update();
+    }
+
+    public void genNextLevel() {
+        level.genNextLevel();
+    }
+
+    public static void checkCollision(Bullet bullet) {
+        int X = player.getX();
+        int Y = player.getY();
+
+        if(X <= bullet.getX() && bullet.getX() <= X + bullet.getSizeX() && Y <= bullet.getY() && bullet.getY() <= Y + bullet.getSizeY()) {
+            bullet.setX(GameWindow.WIDTH + 50);
+            bullet.setY(GameWindow.HEIGHT + 50);
+            player.decHealth(10);
+
+            //System.out.println("checkCollision() : Bullets hits Player");
         }
 
-        player = new Player(WIDTH/2 - 16, HEIGHT - 22, 123, 32);
-        START_SEED = 5;
-        this.addKeyListener(new KeyInput());
+        for(Barrier b : level.getBarriers()) {
+            X = b.getX();
+            Y = b.getY();
+            if(X <= bullet.getX() && bullet.getX() <= X + b.getSizeX() && Y <= bullet.getY() && bullet.getY() <= Y + b.getSizeY()) {
+                b.decHealth();
+                bullet.setX(GameWindow.WIDTH + 50);
+                bullet.setY(GameWindow.HEIGHT + 50);
 
-        new Window(WIDTH, HEIGHT, this);
-    }
-
-    public synchronized void start() {
-        thread = new Thread(this);
-        thread.start();
-    }
-
-    public synchronized void stop() {
-        try {
-            thread.join();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        System.exit(0);
-    }
-
-    public void run() {
-        long lastTime = System.nanoTime();
-        double amountOfTicks = 60.0;
-        double ns = 1000000000 / amountOfTicks;
-        double delta = 0;
-        long timer = System.currentTimeMillis();
-        long timer2 = System.currentTimeMillis();
-        int frames = 0;
-        int seed = START_SEED;
-        int gap2 = 1000;
-        int userOption;
-
-        while(running) {
-            lastTime = System.nanoTime();
-            timer = System.currentTimeMillis();
-            timer2 = System.currentTimeMillis();
-            //gap2 = Math.min(50*seed, 500);
-            ++LEVEL;
-
-            l = new Level(seed, currEnemy, WIDTH, HEIGHT);
-            currEnemy = l.enemyCount();
-
-            //player.incHealth(20);
-            player.setX(WIDTH/2 - 16);
-            player.setY(HEIGHT - 62);
-
-            int levelTimer = 1;
-
-            while(player.isAlive() && levelTimer <= TIME_PER_LEVEL && LEVEL <= MAX_LEVEL) {
-                long now = System.nanoTime();
-                delta += (now - lastTime) / ns;
-                lastTime = now;
-
-                while(delta >= 1) {
-                    tick();
-                    delta--;
-                }
-
-                render();
-                frames++;
-
-                if(System.currentTimeMillis() - timer2 > gap2) {
-                    if(!isPaused) {
-                        //System.out.println("Level " + LEVEL + ", Bullets " + l.bulletCount());
-
-                        int x = l.update();
-                        //System.out.print(x + ", ");
-                    }
-                    timer2 += gap2;
-                }
-                if(System.currentTimeMillis() - timer > 1000) {
-                    if(!isPaused) {
-                        SCORE++;
-                        levelTimer++;
-                        l.addHelper();
-                        l.genMediPack();
-                        //System.out.println("FPS : " + frames);
-                    }
-
-                    timer += 1000;
-                    //System.out.println(isPaused == false ? "FALSE" : "TRUE");
-                    frames = 0;
-                }
-            }
-
-            tick();
-            render();
-
-            if(!player.isAlive()) {
-                l = null;
-                userOption = JOptionPane.showConfirmDialog(this, "Your Score : " + SCORE + ". Want to replay?");
-                if(userOption != JOptionPane.YES_OPTION) {
-                    //stop();
-                    System.exit(0);
-                }
-                seed = START_SEED;
-                LEVEL = 0;
-                SCORE = 1;
-                player.incHealth(100);
-            } else if(LEVEL != MAX_LEVEL) {
-                JOptionPane.showMessageDialog(this, "Go to next level");
-                seed++;
-                System.out.println();
-            } else {
-                JOptionPane.showMessageDialog(this, "Great! You have passed All Level");
-                System.exit(0);
+                //System.out.println("checkCollision() : Bullets hits Barrier");
             }
         }
-        //stop();
+    }
+    public static void checkHealing(MedicPack medic) {
+        int X = player.getX();
+        int Y = player.getY();
+
+        if(X <= medic.getX() && medic.getX() <= X + medic.getSizeX() && Y <= medic.getY() && medic.getY() <= Y + medic.getSizeY()) {
+            medic.setX(GameWindow.WIDTH + 50);
+            medic.setY(GameWindow.HEIGHT + 50);
+            player.incHealth(20);
+
+            System.out.println("checkHealing() : MedicPack heals Player");
+        }
     }
 
-    private void tick() {
+    public boolean isRunning() {
+        return !isPaused;
+    }
+
+    public long getScore() {
+        return score;
+    }
+    public void tick() {
         if(!isPaused) {
-            l.tick();
+            score++;
+            player.tick();
+            level.tick();
         }
     }
 
-    private void render() {
+    public void render(Graphics g) {
         if(!isPaused) {
-            BufferStrategy bs =  this.getBufferStrategy();
+            g.clearRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
 
-            if(bs == null) {
-                this.createBufferStrategy(3);
-                return;
+            if(ds.getDiff() == DiffSetting.DIFFICULTY.EASY) {
+                g.drawString("Difficulty : Easy", 10, 45);
             }
-            Graphics g = bs.getDrawGraphics();
-            g.setColor(Color.white);
-            g.fillRect(0, 0, WIDTH, HEIGHT);
+            else if(ds.getDiff() == DiffSetting.DIFFICULTY.MEDIUM) {
+                g.drawString("Difficulty : Medium", 10, 45);
+            }
+            else if(ds.getDiff() == DiffSetting.DIFFICULTY.HARD) {
+                g.drawString("Difficulty : Hard", 10, 45);
+            }
+            g.drawString("levelTimer : " + GameWindow.levelTimer, GameWindow.WIDTH/2 - 25, 45);
 
-            g.setColor(Color.red);
-            g.drawString("Level " + LEVEL, WIDTH/2 - 20, 25);
+            g.drawImage(GameWindow.gameUtil.close, GameWindow.WIDTH - 30, 15, 16, 16, null);
 
-            g.setColor(Color.black);
-            g.drawString("Score : " + SCORE, WIDTH - 100, 20);
+            g.setFont(g.getFont().deriveFont(15f));
+
+            g.drawString("Score : " + score, GameWindow.WIDTH - 130, 35);
 
             player.render(g);
-            l.render(g);
-
-            g.dispose();
-            bs.show();
+            level.render(g);
         }
-    }
-
-    public static void main(String[] args) {
-        new Game();
     }
 }

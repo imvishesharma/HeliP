@@ -1,51 +1,29 @@
 package helip;
 
 import java.awt.Graphics;
-import java.awt.Color;
-import java.util.Random;
 import java.util.LinkedList;
 
-
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.File;
-
 public class Enemy extends GameObject {
-    private boolean faceEast;
-    private BufferedImage i1, i2;
+    private boolean faceRight;
+    private LinkedList<Bullet> bullets;
 
-    private LinkedList<Bullet> bullets = new LinkedList<Bullet>();
+    public Enemy(int posX, int posY, int size, int faceRight) {
+        super(posX, posY, GameObject.GameObjectID.ENEMY, size, size);
 
-    public Enemy(int posX, int posY, int id, int size, int initDirec) {
-        super(posX, posY, id, size, "/Images/hc.png");
-
-        try {
-            i1 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            i2 = ImageIO.read(new File(Game.gameCurrentPath + "/Images/hc1.png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if(initDirec == 0) {
-            faceEast = true;
-            this.setImage(i1);
+        if(faceRight == 1) {
+            this.faceRight = true;
+            this.setImage(GameWindow.gameUtil.enemyHeliFR);
         }
         else {
-            faceEast = false;
-            this.setImage(i2);
+            this.faceRight = false;
+            this.setImage(GameWindow.gameUtil.enemyHeliFL);
         }
 
-        speedX = 2;
-        speedY = 0;
+        bullets = new LinkedList<Bullet>();
     }
 
     public void createBullet(int vel) {
-        Bullet b = new Bullet(posX, posY, 124, 16);
+        Bullet b = new Bullet(posX, posY, 16);
         b.setSpeedY(vel);
         bullets.add(b);
     }
@@ -55,18 +33,20 @@ public class Enemy extends GameObject {
     }
 
     public void tick() {
-        if(faceEast) {
-            if(posX + size > Game.WIDTH) {
-                faceEast = false;
-                this.setImage(i2);
+        // System.out.println("Enemy tick()");
+
+        if(faceRight) {
+            if(posX + sizeX > GameWindow.WIDTH) {
+                faceRight = false;
+                this.setImage(GameWindow.gameUtil.enemyHeliFL);
                 return;
             }
             posX += speedX;
         }
         else {
             if(posX < 0) {
-                faceEast = true;
-                this.setImage(i1);
+                faceRight = true;
+                this.setImage(GameWindow.gameUtil.enemyHeliFR);
                 return;
             }
             posX -= speedX;
@@ -74,18 +54,17 @@ public class Enemy extends GameObject {
 
         for(int i = 0; i < bullets.size(); i++) {
             bullets.get(i).tick();
-            if(bullets.get(i).posY >= Game.HEIGHT - 30) {
+            if(bullets.get(i).getY() >= GameWindow.HEIGHT - 30) {
                 bullets.remove(i);
             }
         }
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.black);
-        g.drawImage(img, posX, posY, null);
+        g.drawImage(this.img, posX, posY, sizeX, sizeY, null);
 
-        for(int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).render(g);
+        for(GameObject go : bullets) {
+            go.render(g);
         }
     }
 }

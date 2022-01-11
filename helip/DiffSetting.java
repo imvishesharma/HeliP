@@ -15,7 +15,7 @@ public class DiffSetting {
         this.currDiff = currDiff;
 
         commonPath = new String("Data/Settings/");
-        settingVal = new int[6];
+        settingVal = new int[7];
 
         this.setDiff(currDiff);
     }
@@ -72,5 +72,8 @@ public class DiffSetting {
     }
     public int getHelperProb() {
         return settingVal[5];
+    }
+    public int getUpdateTime() {
+        return settingVal[6];
     }
 }

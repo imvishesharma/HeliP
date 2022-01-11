@@ -40,7 +40,9 @@ public class GameWindow
     public static STATE currState = STATE.MENU;
 
     static long prevTime128, currTime128, prevTime1000, currTime1000;
-    private final int MS128 = 128, MS1000 = 1000;
+    private final int MS64 = 64, MS128 = 128;
+
+    public static int updateTime = 1000;
 
     static long lastTime, nowTime;
     double nTicks = 64;
@@ -103,9 +105,9 @@ public class GameWindow
                 delta--;
             }
 
-            if(currTime1000 - prevTime1000 >= MS1000) {
-                prevTime1000 = currTime1000;
-                if(currState == STATE.GAME && game.isRunning()) {
+            if(currState == STATE.GAME && game.isRunning()) {
+                if(currTime1000 - prevTime1000 >= updateTime) {
+                    prevTime1000 = currTime1000;
                     game.update();
                     levelTimer++;
                     //System.out.println("run() : levelTimer = " + levelTimer);

@@ -4,3 +4,4 @@ initialBarriers 5
 bulletVelocity 4
 bulletDropProbability 1500
 helperHeliProbability 200
+updateTime 500

@@ -31,6 +31,10 @@ public class Game {
         level.genNextLevel();
     }
 
+    public DiffSetting getDiffSett() {
+        return ds;
+    }
+    
     public static void checkCollision(Bullet bullet) {
         int X = player.getX();
         int Y = player.getY();

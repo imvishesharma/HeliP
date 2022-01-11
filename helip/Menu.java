@@ -16,8 +16,9 @@ public class Menu extends MouseAdapter {
     private LinkedList<String> startStory;
     private LinkedList<GameObject> obj;
 
-    private int buttonX = GameWindow.WIDTH/2 - 75, buttonY = GameWindow.HEIGHT - 200;
-    private int bL = 150, bH = 40;
+    private int buttonPX = 30, buttonPY = GameWindow.HEIGHT - 80;
+    private int buttonSX = GameWindow.WIDTH/2 - 75, buttonSY = GameWindow.HEIGHT - 200;
+    private int bL = 130, bH = 40;
 
     private static DiffSetting currDiffSetting;
 
@@ -49,15 +50,15 @@ public class Menu extends MouseAdapter {
 
     private void drawPlayButton(Graphics g) {
         g.setColor(Color.green);
-        g.fillRect(buttonX, buttonY, bL, bH);
-        g.fillRect(buttonX, buttonY + 50, bL, bH);
-        g.fillRect(buttonX, buttonY + 100, bL, bH);
+        g.fillRect(buttonPX, buttonPY, bL, bH);
+        g.fillRect(buttonPX + 160, buttonPY, bL, bH);
+        g.fillRect(buttonPX + 310, buttonPY, bL, bH);
 
         g.setColor(Color.black);
         g.setFont(g.getFont().deriveFont(20f));
-        g.drawString("Play", buttonX + 50, buttonY + 25);
-        g.drawString("Scorecard", buttonX + 25, buttonY + 75);
-        g.drawString("Exit", buttonX + 50, buttonY + 125);
+        g.drawString("Play", buttonPX + 50, buttonPY + 25);
+        g.drawString("Scorecard", buttonPX + 180, buttonPY + 25);
+        g.drawString("Exit", buttonPX + 350, buttonPY + 25);
 
         g.drawImage(GameWindow.gameUtil.setting, 450, 30, 32, 32, null);
 
@@ -75,15 +76,15 @@ public class Menu extends MouseAdapter {
 
     private void drawSettingButton(Graphics g) {
         g.setColor(Color.gray);
-        g.fillRect(buttonX, buttonY - 200, bL, bH);
-        g.fillRect(buttonX, buttonY - 150 , bL, bH);
-        g.fillRect(buttonX, buttonY - 100, bL, bH);
+        g.fillRect(buttonSX, buttonSY - 200, bL, bH);
+        g.fillRect(buttonSX, buttonSY - 150 , bL, bH);
+        g.fillRect(buttonSX, buttonSY - 100, bL, bH);
 
         g.setColor(Color.black);
         g.setFont(g.getFont().deriveFont(20f));
-        g.drawString("Easy", buttonX + 50, buttonY - 175);
-        g.drawString("Medium", buttonX + 35, buttonY - 125);
-        g.drawString("Hard", buttonX + 50, buttonY - 75);
+        g.drawString("Easy", buttonSX + 40, buttonSY - 175);
+        g.drawString("Medium", buttonSX + 25, buttonSY - 125);
+        g.drawString("Hard", buttonSX + 40, buttonSY - 75);
     }
 
     public boolean mouseOver(int mx, int my, int x, int y, int w, int h) {
@@ -98,20 +99,21 @@ public class Menu extends MouseAdapter {
 
     public void mousePressed(MouseEvent e) {
         if(GameWindow.currState == GameWindow.STATE.MENU) {
-            if(mouseOver(e.getX(), e.getY(), buttonX, buttonY, bL, bH)) {
+            if(mouseOver(e.getX(), e.getY(), buttonPX, buttonPY, bL, bH)) {
                 if(GameWindow.game == null) {
                     GameWindow.game = new Game(currDiffSetting);
+                    GameWindow.updateTime = currDiffSetting.getUpdateTime();
                     GameWindow.currState = GameWindow.STATE.GAME;
                 }
                 System.out.println("mousePressed() : Play Button Clicked");
             }
 
-            else if(mouseOver(e.getX(), e.getY(), buttonX, buttonY + 50, bL, bH)) {
+            else if(mouseOver(e.getX(), e.getY(), buttonPX + 160, buttonPY, bL, bH)) {
                 GameWindow.currState = GameWindow.STATE.SCORES;
                 System.out.println("mousePressed() : Scorecard Button Clicked");
             }
 
-            else if(mouseOver(e.getX(), e.getY(), buttonX, buttonY + 100, bL, bH)) {
+            else if(mouseOver(e.getX(), e.getY(), buttonPX + 310, buttonPY, bL, bH)) {
                 System.out.println("mousePressed() : Exit Button Clicked");
                 System.exit(0);
             }
@@ -122,19 +124,19 @@ public class Menu extends MouseAdapter {
             }
         }
         else if(GameWindow.currState == GameWindow.STATE.SETTING) {
-            if(mouseOver(e.getX(), e.getY(), buttonX, buttonY - 200, bL, bH)) {
+            if(mouseOver(e.getX(), e.getY(), buttonSX, buttonSY - 200, bL, bH)) {
                 currDiffSetting.setDiff(DiffSetting.DIFFICULTY.EASY);
                 GameWindow.currState = GameWindow.STATE.MENU;
 
                 System.out.println("mousePressed() : Easy Button Clicked");
             }
-            else if(mouseOver(e.getX(), e.getY(), buttonX, buttonY - 150, bL, bH)) {
+            else if(mouseOver(e.getX(), e.getY(), buttonSX, buttonSY - 150, bL, bH)) {
                 currDiffSetting.setDiff(DiffSetting.DIFFICULTY.MEDIUM);
                 GameWindow.currState = GameWindow.STATE.MENU;
 
                 System.out.println("mousePressed() : Medium Button Clicked");
             }
-            else if(mouseOver(e.getX(), e.getY(), buttonX, buttonY - 100, bL, bH)) {
+            else if(mouseOver(e.getX(), e.getY(), buttonSX, buttonSY - 100, bL, bH)) {
                 currDiffSetting.setDiff(DiffSetting.DIFFICULTY.HARD);
                 GameWindow.currState = GameWindow.STATE.MENU;
 
@@ -164,7 +166,7 @@ public class Menu extends MouseAdapter {
         try {
             File file = new File(scorePath);
             FileWriter fr = new FileWriter(file, true);
-            fr.write("Level-" + Long.toString(GameWindow.game.currLevel()) + " " + Long.toString(GameWindow.game.getScore()));
+            fr.write("Level-" + Long.toString(GameWindow.game.currLevel()) + " " + Long.toString(GameWindow.game.getScore()) + "\n");
             fr.close();
 
         } catch (IOException e) {
@@ -177,11 +179,11 @@ public class Menu extends MouseAdapter {
     }
 
     public void tick() {
-        if(GameWindow.currState == GameWindow.STATE.MENU) {
+        //if(GameWindow.currState == GameWindow.STATE.MENU) {
             for(GameObject e : obj) {
                 e.tick();
             }
-        }
+        //}
     }
 
     public void render(Graphics g) {
@@ -194,7 +196,7 @@ public class Menu extends MouseAdapter {
 
             for(String s : startStory) {
                 g.drawString(s, 5, linePosY);
-                linePosY += 25;
+                linePosY += 16;
             }
 
             for(GameObject e : obj) {
@@ -204,6 +206,10 @@ public class Menu extends MouseAdapter {
             drawPlayButton(g);
         }
         else if(GameWindow.currState == GameWindow.STATE.SETTING) {
+            for(GameObject e : obj) {
+                e.render(g);
+            }
+
             drawSettingButton(g);
         }
     }

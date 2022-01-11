@@ -150,8 +150,19 @@ public class Menu extends MouseAdapter {
     }
 
     public void closeGame() {
+        String scorePath = new String("Data/");
+        if(currDiffSetting.getDiff() == DiffSetting.DIFFICULTY.EASY) {
+            scorePath += "EasyScore.txt";
+        }
+        else if(currDiffSetting.getDiff() == DiffSetting.DIFFICULTY.MEDIUM) {
+            scorePath += "MediumScore.txt";
+        }
+        else if(currDiffSetting.getDiff() == DiffSetting.DIFFICULTY.HARD) {
+            scorePath += "HardScore.txt";
+        }
+
         try {
-            File file = new File("Data/Scores.txt");
+            File file = new File(scorePath);
             FileWriter fr = new FileWriter(file, true);
             fr.write(Long.toString(GameWindow.game.getScore()));
             fr.close();

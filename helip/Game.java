@@ -24,6 +24,9 @@ public class Game {
         level.update();
     }
 
+    public int currLevel() {
+        return level.currLevel();
+    }
     public void genNextLevel() {
         level.genNextLevel();
     }

@@ -39,6 +39,9 @@ public class Level {
         medics = new LinkedList<MedicPack>();
     }
 
+    public int currLevel() {
+        return currLevel;
+    }
     public void genNextLevel() {
         currLevel++;
         nEnemies += GameUtil.getRandom(1, SEED);

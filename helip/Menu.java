@@ -164,7 +164,7 @@ public class Menu extends MouseAdapter {
         try {
             File file = new File(scorePath);
             FileWriter fr = new FileWriter(file, true);
-            fr.write(Long.toString(GameWindow.game.getScore()));
+            fr.write("Level-" + Long.toString(GameWindow.game.currLevel()) + " " + Long.toString(GameWindow.game.getScore()));
             fr.close();
 
         } catch (IOException e) {

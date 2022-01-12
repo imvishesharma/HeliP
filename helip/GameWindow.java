@@ -39,8 +39,8 @@ public class GameWindow
     public static GameUtil gameUtil;
     public static STATE currState = STATE.MENU;
 
-    static long prevTime128, currTime128, prevTime1000, currTime1000;
-    private final int MS64 = 64, MS128 = 128;
+    static long prevUpdateTime, currUpdateTime, prevTime1000, currTime1000;
+    private final int MS64 = 64, MS1000 = 1000;
 
     public static int updateTime = 1000;
 
@@ -76,7 +76,7 @@ public class GameWindow
         gameCanvas.createBufferStrategy(3);
         BufferStrategy gameBuffer = gameCanvas.getBufferStrategy();
 
-        //prevTime128 = System.currentTimeMillis();
+        prevUpdateTime = System.currentTimeMillis();
         prevTime1000 = System.currentTimeMillis();
 
         lastTime = System.nanoTime();
@@ -93,7 +93,7 @@ public class GameWindow
                 JOptionPane.showMessageDialog(gameFrame, "You Died! Score = " +  game.getScore());
                 menu.closeGame();
             }
-            //currTime128 = System.currentTimeMillis();
+            currUpdateTime = System.currentTimeMillis();
             currTime1000 = System.currentTimeMillis();
 
             nowTime = System.nanoTime();
@@ -106,10 +106,13 @@ public class GameWindow
             }
 
             if(currState == STATE.GAME && game.isRunning()) {
-                if(currTime1000 - prevTime1000 >= updateTime) {
+                if(currTime1000 - prevTime1000 >= MS1000) {
                     prevTime1000 = currTime1000;
-                    game.update();
                     levelTimer++;
+                }
+                if(currUpdateTime - prevUpdateTime >= updateTime) {
+                    prevUpdateTime = currUpdateTime;
+                    game.update();
                     //System.out.println("run() : levelTimer = " + levelTimer);
                 }
             }

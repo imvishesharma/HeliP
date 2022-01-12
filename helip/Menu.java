@@ -187,7 +187,10 @@ public class Menu extends MouseAdapter {
     }
 
     public void render(Graphics g) {
-        g.clearRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
+        //g.clearRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
+
+        g.setColor(Color.white);
+        g.fillRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
 
         if(GameWindow.currState == GameWindow.STATE.MENU) {
             g.setColor(Color.black);

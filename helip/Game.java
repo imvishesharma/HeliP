@@ -1,6 +1,7 @@
 package helip;
 
 import java.awt.Graphics;
+import java.awt.Color;
 
 public class Game {
     public static Player player;
@@ -34,7 +35,7 @@ public class Game {
     public DiffSetting getDiffSett() {
         return ds;
     }
-    
+
     public static void checkCollision(Bullet bullet) {
         int X = player.getX();
         int Y = player.getY();
@@ -89,8 +90,12 @@ public class Game {
 
     public void render(Graphics g) {
         if(!isPaused) {
-            g.clearRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
+            //g.clearRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
+            g.setColor(Color.white);
+            g.fillRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
 
+            g.setColor(Color.black);
+            
             if(ds.getDiff() == DiffSetting.DIFFICULTY.EASY) {
                 g.drawString("Difficulty : Easy", 10, 45);
             }

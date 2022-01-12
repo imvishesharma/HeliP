@@ -93,6 +93,12 @@ public class GameWindow
                 JOptionPane.showMessageDialog(gameFrame, "You Died! Score = " +  game.getScore());
                 menu.closeGame();
             }
+
+            if(currState == STATE.GAME && game.currLevel() == 21) {
+                JOptionPane.showMessageDialog(gameFrame, "Hooray You Passed All level with Score = " +  game.getScore());
+                menu.closeGame();
+            }
+
             currUpdateTime = System.currentTimeMillis();
             currTime1000 = System.currentTimeMillis();
 

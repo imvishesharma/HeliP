@@ -2,7 +2,7 @@
 Just a simple game written in JAVA which offers fun and exciting gameplay for users.
 
 # In-Game Screen Shot
-<img src="https://github.com/imvishesharma/HeliP/blob/main/ScreenShots/1.png" width="150" height="280">
+<img src="https://github.com/imvishesharma/HeliP/blob/main/ScreenShots/1.png" width="500" height="600">
 
 ![Alt text]( https://github.com/imvishesharma/HeliP/blob/main/ScreenShots/2.png "Optional Title")
 

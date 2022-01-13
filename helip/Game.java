@@ -69,7 +69,7 @@ public class Game {
             medic.setY(GameWindow.HEIGHT + 50);
             player.incHealth(20);
 
-            System.out.println("checkHealing() : MedicPack heals Player");
+            //System.out.println("checkHealing() : MedicPack heals Player");
         }
     }
 
@@ -95,7 +95,7 @@ public class Game {
             g.fillRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
 
             g.setColor(Color.black);
-            
+
             if(ds.getDiff() == DiffSetting.DIFFICULTY.EASY) {
                 g.drawString("Difficulty : Easy", 10, 45);
             }

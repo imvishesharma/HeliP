@@ -49,7 +49,7 @@ public class GameWindow
     double delta = 0;
     double ns = 1000000000 / nTicks;
 
-    public static long levelTimer, TIME_PER_LEVEL = 10;
+    public static long levelTimer, TIME_PER_LEVEL = 15;
 
     public GameWindow() {
         gameFrame = new JFrame("HeliP");
@@ -80,7 +80,7 @@ public class GameWindow
         prevTime1000 = System.currentTimeMillis();
 
         lastTime = System.nanoTime();
-        levelTimer = 0;
+        levelTimer = 1;
 
         while(true) {
             if(levelTimer > TIME_PER_LEVEL) {
@@ -93,7 +93,7 @@ public class GameWindow
                 JOptionPane.showMessageDialog(gameFrame, "Hooray You Passed All level with Score = " +  game.getScore());
                 menu.closeGame();
             }
-            
+
             if(currState == STATE.GAME && !game.player.isAlive()) {
                 JOptionPane.showMessageDialog(gameFrame, "You Died! Score = " +  game.getScore());
                 menu.closeGame();

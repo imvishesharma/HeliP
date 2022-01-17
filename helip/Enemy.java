@@ -23,7 +23,7 @@ public class Enemy extends GameObject {
     }
 
     public void createBullet(int vel) {
-        Bullet b = new Bullet(posX + GameUtil.getRandom(0, 5), posY, 16);
+        Bullet b = new Bullet(posX + GameUtil.getRandom(0, 10), posY, 16);
         b.setSpeedY(vel);
         bullets.add(b);
     }

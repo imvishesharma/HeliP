@@ -84,14 +84,17 @@ public class GameWindow
 
         while(true) {
             if(levelTimer > TIME_PER_LEVEL) {
+                if(game.currLevel() == 20) {
+                    JOptionPane.showMessageDialog(gameFrame, "Hooray You Passed All level with Score = " +  game.getScore());
+                    menu.closeGame();
+                    levelTimer = 0;
+                    continue;
+                }
+
                 JOptionPane.showMessageDialog(gameFrame, "Continue to Next Level");
 
                 game.genNextLevel();
                 levelTimer = 0;
-            }
-            if(currState == STATE.GAME && game.currLevel() == 21) {
-                JOptionPane.showMessageDialog(gameFrame, "Hooray You Passed All level with Score = " +  game.getScore());
-                menu.closeGame();
             }
 
             if(currState == STATE.GAME && !game.player.isAlive()) {

@@ -57,7 +57,7 @@ public class Level {
         HashMap<Integer, Integer> positions = new HashMap<Integer, Integer>();
 
         for(int i = 0; i < nEnemies; i++) {
-            positions.put(r.nextInt(WIDTH - 16), 50 + r.nextInt(150));
+            positions.put(r.nextInt(WIDTH), 50 + r.nextInt(150));
         }
 
         for(Map.Entry<Integer, Integer> p : positions.entrySet()) {

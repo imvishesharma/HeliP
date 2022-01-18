@@ -17,8 +17,8 @@ public class Barrier extends GameObject {
         return health;
     }
 
-    public void decHealth() {
-        health -= 5;
+    public void decHealth(int val) {
+        health -= val;
     }
 
     public void tick() {

@@ -37,39 +37,101 @@ public class Game {
     }
 
     public static void checkCollision(Bullet bullet) {
-        int X = player.getX();
-        int Y = player.getY();
+        int Xp = player.getX();
+        int Yp = player.getY();
 
-        if(X <= bullet.getX() && bullet.getX() <= X + bullet.getSizeX() && Y <= bullet.getY() && bullet.getY() <= Y + bullet.getSizeY()) {
+        int Xb = bullet.getX();
+        int Yb = bullet.getY();
+
+
+        boolean collided = false;
+        if(Xp > Xb && Xp - Xb < bullet.getSizeX()) {
+            if(Yp > Yb && Yp - Yb < bullet.getSizeY()) {
+                collided = true;
+            }
+            else if(Yp < Yb && Yb - Yp < player.getSizeY()) {
+                collided = true;
+            }
+        }
+        else if(Xp < Xb && Xb - Xp < player.getSizeX()) {
+            if(Yp > Yb && Yp - Yb < bullet.getSizeY()) {
+                collided = true;
+            }
+            else if(Yp < Yb && Yb - Yp < player.getSizeY()) {
+                collided = true;
+            }
+        }
+
+        if(collided) {
             bullet.setX(GameWindow.WIDTH + 50);
             bullet.setY(GameWindow.HEIGHT + 50);
             player.decHealth(10);
 
-            //System.out.println("checkCollision() : Bullets hits Player");
+            System.out.println("checkCollision() : Bullets hits Player");
         }
 
         for(Barrier b : level.getBarriers()) {
-            X = b.getX();
-            Y = b.getY();
-            if(X <= bullet.getX() && bullet.getX() <= X + b.getSizeX() && Y <= bullet.getY() && bullet.getY() <= Y + b.getSizeY()) {
-                b.decHealth();
+            int X = b.getX();
+            int Y = b.getY();
+
+            collided = false;
+            if(X > Xb && X - Xb < bullet.getSizeX()) {
+                if(Y > Yb && Y - Yb < bullet.getSizeY()) {
+                    collided = true;
+                }
+                else if(Y < Yb && Yb - Y < b.getSizeY()) {
+                    collided = true;
+                }
+            }
+            else if(X < Xb && Xb - X < b.getSizeX()) {
+                if(Y > Yb && Y - Yb < bullet.getSizeY()) {
+                    collided = true;
+                }
+                else if(Y < Yb && Yb - Y < b.getSizeY()) {
+                    collided = true;
+                }
+            }
+
+            if(collided) {
                 bullet.setX(GameWindow.WIDTH + 50);
                 bullet.setY(GameWindow.HEIGHT + 50);
+                b.decHealth(5);
 
-                //System.out.println("checkCollision() : Bullets hits Barrier");
+                System.out.println("checkCollision() : Bullets hits Barrier");
             }
         }
     }
     public static void checkHealing(MedicPack medic) {
-        int X = player.getX();
-        int Y = player.getY();
+        int Xp = player.getX();
+        int Yp = player.getY();
 
-        if(X <= medic.getX() && medic.getX() <= X + medic.getSizeX() && Y <= medic.getY() && medic.getY() <= Y + medic.getSizeY()) {
+        int Xm = medic.getX();
+        int Ym = medic.getY();
+
+        boolean collided = false;
+        if(Xp > Xm && Xp - Xm < medic.getSizeX()) {
+            if(Yp > Ym && Yp - Ym < medic.getSizeY()) {
+                collided = true;
+            }
+            else if(Yp < Ym && Ym - Yp < player.getSizeY()) {
+                collided = true;
+            }
+        }
+        else if(Xp < Xm && Xm - Xp < player.getSizeX()) {
+            if(Yp > Ym && Yp - Ym < medic.getSizeY()) {
+                collided = true;
+            }
+            else if(Yp < Ym && Ym - Yp < player.getSizeY()) {
+                collided = true;
+            }
+        }
+
+        if(collided) {
             medic.setX(GameWindow.WIDTH + 50);
             medic.setY(GameWindow.HEIGHT + 50);
             player.incHealth(20);
 
-            //System.out.println("checkHealing() : MedicPack heals Player");
+            System.out.println("checkHealing() : MedicPack heals Player");
         }
     }
 

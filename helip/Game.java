@@ -22,7 +22,7 @@ public class Game {
     }
 
     public void update() {
-        level.update();
+        score += level.update();
     }
 
     public int currLevel() {
@@ -82,7 +82,6 @@ public class Game {
     }
     public void tick() {
         if(!isPaused) {
-            score++;
             player.tick();
             level.tick();
         }
